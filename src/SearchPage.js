@@ -1,25 +1,40 @@
 import React from 'react'
 import BookShellCard from "./BookShellCard";
 import {Link} from "react-router-dom";
+import {getAll, search} from "./BooksAPI";
 
 export default class SearchPage extends React.Component {
-
     state = {
-        searchQuery: ''
+        books: []
     }
 
     queryBooks(event) {
-        const query = event.target.value;
-        this.setState(() => (
-            {searchQuery: query}
-        ));
+        if (!!event.target.value) {
+            search(event.target.value).then((books) => {
+                if (!books.error) {
+                    this.setState(() => ({
+                        books: books
+                    }))
+                }
+            })
+        } else {
+            getAll().then((books) => {
+                this.setState(() => ({
+                    books
+                }))
+            })
+        }
+    }
+
+    componentDidMount() {
+        getAll().then((books) => {
+            this.setState(() => ({
+                books
+            }))
+        })
     }
 
     render() {
-        const booksToPrint = this.props.books.filter(book => {
-            return book.title.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1 ||
-                book.authors.filter(author => author.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1).length > 0;
-        });
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -32,7 +47,7 @@ export default class SearchPage extends React.Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <BookShellCard books={booksToPrint} changeBookStatus={this.props.changeBookStatus}/>
+                    <BookShellCard books={this.state.books} changeBookStatus={this.props.changeBookStatus}/>
                 </div>
             </div>
         )

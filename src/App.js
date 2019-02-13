@@ -1,9 +1,9 @@
 import React from 'react'
-import './App.css'
 import BookShellCard from './BookShellCard'
 import {getAll, update} from "./BooksAPI";
 import SearchPage from './SearchPage'
 import {Link, Route} from "react-router-dom";
+import './App.css'
 
 class BooksApp extends React.Component {
     constructor(props) {
@@ -26,13 +26,29 @@ class BooksApp extends React.Component {
 
     changeBookStatus(book, event) {
         const shelf = event.target.value;
-        update(book, shelf).then(() => {
-            getAll().then((books) => {
-                this.setState(() => ({
-                    books
-                }))
-            })
+        book.shelf = shelf;
+
+        update(book, shelf);
+
+        let newBook = true;
+        let updatedBooks = this.state.books.map(stateBook => {
+            if (book.id === stateBook.id) {
+                stateBook = book;
+                newBook = false;
+            }
+            return stateBook;
         });
+
+        if (newBook) {
+            console.log(updatedBooks);
+            updatedBooks.push(book);
+            console.log(updatedBooks);
+        }
+
+        console.log(updatedBooks);
+        this.setState(() => ({
+            books: updatedBooks
+        }));
     }
 
     render() {
@@ -66,8 +82,7 @@ class BooksApp extends React.Component {
                     </div>
                 )}/>
                 <Route exact path='/search' render={() => (
-                    <SearchPage books={this.state.books}
-                                changeBookStatus={this.changeBookStatus}/>
+                    <SearchPage changeBookStatus={this.changeBookStatus}/>
                 )}/>
             </div>
         )
