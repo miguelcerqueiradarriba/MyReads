@@ -10,6 +10,7 @@ class BooksApp extends React.Component {
         super(props);
 
         this.changeBookStatus = this.changeBookStatus.bind(this);
+        this.retrieveBookStatus = this.retrieveBookStatus.bind(this);
     }
 
     state = {
@@ -40,15 +41,19 @@ class BooksApp extends React.Component {
         });
 
         if (newBook) {
-            console.log(updatedBooks);
             updatedBooks.push(book);
-            console.log(updatedBooks);
         }
 
-        console.log(updatedBooks);
         this.setState(() => ({
             books: updatedBooks
         }));
+    }
+
+    retrieveBookStatus(book) {
+        const bookFound = this.state.books.find(stateBook =>
+            book.id === stateBook.id
+        )
+        return bookFound && bookFound.shelf ? bookFound.shelf : "none";
     }
 
     render() {
@@ -63,13 +68,16 @@ class BooksApp extends React.Component {
                             <div>
                                 <BookShellCard title="Currently Reading"
                                                books={this.state.books.filter(book => book.shelf === 'currentlyReading')}
-                                               changeBookStatus={this.changeBookStatus}/>
+                                               changeBookStatus={this.changeBookStatus}
+                                               retrieveBookStatus={this.retrieveBookStatus}/>
                                 <BookShellCard title="Want to Read"
                                                books={this.state.books.filter(book => book.shelf === 'wantToRead')}
-                                               changeBookStatus={this.changeBookStatus}/>
+                                               changeBookStatus={this.changeBookStatus}
+                                               retrieveBookStatus={this.retrieveBookStatus}/>
                                 <BookShellCard title="Read"
                                                books={this.state.books.filter(book => book.shelf === 'read')}
-                                               changeBookStatus={this.changeBookStatus}/>
+                                               changeBookStatus={this.changeBookStatus}
+                                               retrieveBookStatus={this.retrieveBookStatus}/>
                             </div>
                         </div>
                         <div className="open-search">
@@ -82,7 +90,7 @@ class BooksApp extends React.Component {
                     </div>
                 )}/>
                 <Route exact path='/search' render={() => (
-                    <SearchPage changeBookStatus={this.changeBookStatus}/>
+                    <SearchPage changeBookStatus={this.changeBookStatus} retrieveBookStatus={this.retrieveBookStatus}/>
                 )}/>
             </div>
         )

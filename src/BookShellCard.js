@@ -13,10 +13,12 @@ function BooksView(props) {
                                     <div className="book-cover" style={{
                                         width: 128,
                                         height: 193,
-                                        backgroundImage: 'url(' + book.imageLinks.thumbnail + ')'
+                                        backgroundImage: 'url(' + (book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : '') + ')'
                                     }} key={"div3_" + book.id}></div>
                                     <div className="book-shelf-changer" key={"div4_" + book.id}>
-                                        <select onChange={props.changeBookStatus.bind(this, book)} value={book.shelf} key={"select1_" + book.id}>
+                                        <select onChange={props.changeBookStatus.bind(this, book)}
+                                                value={props.retrieveBookStatus(book) ? props.retrieveBookStatus(book) : "none"}
+                                                key={"select1_" + book.id}>
                                             <option value="move" disabled key={"option1_" + book.id}>Move to...</option>
                                             <option value="currentlyReading" key={"option2_" + book.id}>Currently Reading</option>
                                             <option value="wantToRead" key={"option3_" + book.id}>Want to Read</option>
@@ -47,7 +49,8 @@ export default class BookShellCard extends React.Component {
             <div>
                 <div className="bookshelf">
                     {this.props.title && <h2 className="bookshelf-title">{this.props.title}</h2>}
-                    <BooksView books={this.props.books} changeBookStatus={this.props.changeBookStatus}/>
+                    <BooksView books={this.props.books} changeBookStatus={this.props.changeBookStatus}
+                    retrieveBookStatus={this.props.retrieveBookStatus}/>
                 </div>
             </div>
         );

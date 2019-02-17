@@ -9,21 +9,25 @@ export default class SearchPage extends React.Component {
     }
 
     queryBooks(event) {
-        if (!!event.target.value) {
-            search(event.target.value).then((books) => {
-                if (!books.error) {
-                    this.setState(() => ({
-                        books: books
-                    }))
-                }
-            })
-        } else {
-            getAll().then((books) => {
-                this.setState(() => ({
-                    books
-                }))
-            })
+
+        if (!event.target.value) {
+            this.setState(() => ({
+                books: []
+            }));
+            return;
         }
+
+        search(event.target.value).then((books) => {
+            if (!books.error) {
+                this.setState(() => ({
+                    books: books
+                }))
+            } else {
+                this.setState(() => ({
+                    books: []
+                }));
+            }
+        })
     }
 
     componentDidMount() {
@@ -47,7 +51,8 @@ export default class SearchPage extends React.Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <BookShellCard books={this.state.books} changeBookStatus={this.props.changeBookStatus}/>
+                    <BookShellCard books={this.state.books} changeBookStatus={this.props.changeBookStatus}
+                                       retrieveBookStatus={this.props.retrieveBookStatus}/>
                 </div>
             </div>
         )
