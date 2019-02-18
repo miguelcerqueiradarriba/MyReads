@@ -6,31 +6,29 @@ function BooksView(props) {
             <ol className="books-grid">
                 {
                     props.books.map((book) =>
-                        //I couldn't find out how to get rid of key warning. Tried many things but didn't worked.
-                        <li key={"li1_" + book.id}>
-                            <div className="book" key={"div1_" + book.id}>
-                                <div className="book-top" key={"div2_" + book.id}>
+                        <li key={"books_" + book.id}>
+                            <div className="book">
+                                <div className="book-top">
                                     <div className="book-cover" style={{
                                         width: 128,
                                         height: 193,
                                         backgroundImage: 'url(' + (book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : '') + ')'
-                                    }} key={"div3_" + book.id}></div>
-                                    <div className="book-shelf-changer" key={"div4_" + book.id}>
+                                    }}></div>
+                                    <div className="book-shelf-changer">
                                         <select onChange={props.changeBookStatus.bind(this, book)}
-                                                value={props.retrieveBookStatus(book) ? props.retrieveBookStatus(book) : "none"}
-                                                key={"select1_" + book.id}>
-                                            <option value="move" disabled key={"option1_" + book.id}>Move to...</option>
-                                            <option value="currentlyReading" key={"option2_" + book.id}>Currently Reading</option>
-                                            <option value="wantToRead" key={"option3_" + book.id}>Want to Read</option>
-                                            <option value="read" key={"option4_" + book.id}>Read</option>
-                                            <option value="none" key={"option5_" + book.id}>None</option>
+                                                value={props.retrieveBookStatus(book) ? props.retrieveBookStatus(book) : "none"}>
+                                            <option value="move" disabled>Move to...</option>
+                                            <option value="currentlyReading">Currently Reading</option>
+                                            <option value="wantToRead">Want to Read</option>
+                                            <option value="read">Read</option>
+                                            <option value="none">None</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div className="book-title" key={"div5_" + book.id}>{book.title}</div>
+                                <div className="book-title">{book.title}</div>
                                 {
                                     book.authors && book.authors.map(author =>
-                                        <div className="book-authors" key={"div6_" + book.id + "_" + author}>{author}</div>
+                                        <div className="book-authors" key={"authors_" + book.id + "_" + author}>{author}</div>
                                     )
                                 }
                             </div>
