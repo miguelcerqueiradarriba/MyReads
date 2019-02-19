@@ -6,6 +6,7 @@ function BooksView(props) {
             <ol className="books-grid">
                 {
                     props.books.map((book) =>
+                        (!props.mainBooks || !props.mainBooks.filter(mainBook => mainBook.title === book.title).length > 0) &&
                         <li key={"books_" + book.id}>
                             <div className="book">
                                 <div className="book-top">
@@ -47,7 +48,7 @@ export default class BookShellCard extends React.Component {
             <div>
                 <div className="bookshelf">
                     {this.props.title && <h2 className="bookshelf-title">{this.props.title}</h2>}
-                    <BooksView books={this.props.books} changeBookStatus={this.props.changeBookStatus}
+                    <BooksView mainBooks={this.props.mainBooks} books={this.props.books} changeBookStatus={this.props.changeBookStatus}
                     retrieveBookStatus={this.props.retrieveBookStatus}/>
                 </div>
             </div>

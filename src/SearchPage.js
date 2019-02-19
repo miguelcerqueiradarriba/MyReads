@@ -51,7 +51,7 @@ export default class SearchPage extends React.Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <BookShellCard books={this.state.books} changeBookStatus={this.props.changeBookStatus}
+                    <BookShellCard mainBooks={this.props.mainBooks} books={this.state.books} changeBookStatus={this.props.changeBookStatus}
                                        retrieveBookStatus={this.props.retrieveBookStatus}/>
                 </div>
             </div>
